@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-//登陆页面的设计
+//登录页面的设计
 class MyPage extends StatefulWidget {
   const MyPage({Key? key, required this.title}) : super(key: key);
 

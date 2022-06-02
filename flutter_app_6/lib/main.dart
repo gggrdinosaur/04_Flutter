@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TabViewRoute1( ),
     );
   }
 }
@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -44,33 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(icon: const Icon(Icons.share), onPressed: () {}),
         ],
       ),
-      body:Scrollbar(
-      // 显示进度条
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            //动态创建一个List<Widget>
-            children: str
-                .split("")
-                //每一个字母都用一个Text显示,字体为原来的两倍
-                .map((c) => Text(
-                      c,
-                      textScaleFactor: 2.0,
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 18.0,
-                          height: 1.2,
-                          fontFamily: "Courier",
-                          background: Paint()
-                            ..color = const Color.fromARGB(255, 152, 200, 233),
-                          decorationStyle: TextDecorationStyle.dashed),
-                    ))
-                .toList(),
-          ),
-        ),
-      ),
-    ),
       drawer: const MyDrawer(), //抽屉
       bottomNavigationBar: BottomAppBar(
         //底部导航栏
@@ -83,44 +55,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.home),
                 onPressed: () {
                   setState(() {
-                    _selectedIndex = 0;
                   });
                 }),
             IconButton(
                 icon: const Icon(Icons.business),
                 onPressed: () {
                   setState(() {
-                    _selectedIndex = 1;
                   });
                 }),
             IconButton(
                 icon: const Icon(Icons.schedule),
                 onPressed: () {
                   setState(() {
-                    _selectedIndex = 2;
                   });
                 }),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          //悬浮按钮
-          child: const Icon(Icons.add),
-          onPressed: _onAdd),
     );
   }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  void _onAdd() {}
 }
-/*
+
 class TabViewRoute1 extends StatefulWidget {
+  const TabViewRoute1({Key? key}) : super(key: key);
+
   @override
   _TabViewRoute1State createState() => _TabViewRoute1State();
 }
@@ -140,7 +99,12 @@ class _TabViewRoute1State extends State<TabViewRoute1>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("App Name"),
+        //导航栏
+        title: const Text("App Name"),
+        actions: <Widget>[
+          //导航栏右侧菜单
+          IconButton(icon: const Icon(Icons.share), onPressed: () {}),
+        ],
         bottom: TabBar(
           controller: _tabController,
           tabs: tabs.map((e) => Tab(text: e)).toList(),
@@ -158,6 +122,36 @@ class _TabViewRoute1State extends State<TabViewRoute1>
           );
         }).toList(),
       ),
+      drawer: const MyDrawer(), //抽屉
+      bottomNavigationBar: BottomAppBar(
+        //底部导航栏
+        color: Colors.white,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          children: <Widget>[
+            //底部导航栏按钮
+            IconButton(
+                icon: const Icon(Icons.home),
+                onPressed: () {
+                  setState(() {
+                  });
+                }),
+            IconButton(
+                icon: const Icon(Icons.business),
+                onPressed: () {
+                  setState(() {
+                  });
+                }),
+            IconButton(
+                icon: const Icon(Icons.schedule),
+                onPressed: () {
+                  setState(() {
+                  });
+                }),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
+        ),
+      ),
     );
   }
 
@@ -168,7 +162,7 @@ class _TabViewRoute1State extends State<TabViewRoute1>
     super.dispose();
   }
 }
-*/
+
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
     Key? key,
@@ -294,4 +288,38 @@ class ListView3 extends StatelessWidget {
       },
     );
   }
+}
+
+class KeepAliveWrapper extends StatefulWidget {
+  const KeepAliveWrapper({
+    Key? key,
+    this.keepAlive = true,
+    required this.child,
+  }) : super(key: key);
+  final bool keepAlive;
+  final Widget child;
+
+  @override
+  _KeepAliveWrapperState createState() => _KeepAliveWrapperState();
+}
+
+class _KeepAliveWrapperState extends State<KeepAliveWrapper>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
+  }
+
+  @override
+  void didUpdateWidget(covariant KeepAliveWrapper oldWidget) {
+    if(oldWidget.keepAlive != widget.keepAlive) {
+      // keepAlive 状态需要更新，实现在 AutomaticKeepAliveClientMixin 中
+      updateKeepAlive();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  bool get wantKeepAlive => widget.keepAlive;
 }

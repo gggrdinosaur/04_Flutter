@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
       ),
       home: const MyHomePage(title: 'APP',),
-      //home:AnimatedWidgetsTest(),
+      //home:AnimatedWidgetsTest(),  //动画过渡
     );
   }
 }
